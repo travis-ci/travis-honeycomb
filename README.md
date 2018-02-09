@@ -1,6 +1,6 @@
 # worker-honeycomb
 
-parsing logs from [worker](https://github.com/travis-ci/worker) ([logrus](https://github.com/sirupsen/logrus) format) and ship them to [honeycomb](https://honeycomb.io/).
+parsing logs from [worker](https://github.com/travis-ci/worker) ([logrus](https://github.com/sirupsen/logrus) format) and ship them to [honeycomb](https://honeycomb.io/) via [honeytail](https://github.com/honeycombio/honeytail).
 
 ## run (yolo edition)
 
