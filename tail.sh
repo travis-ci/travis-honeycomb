@@ -31,6 +31,8 @@ mkfifo $psmgr
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
+sleep 1
+
 (
   SITE=org
   INFRA=gce
@@ -56,6 +58,8 @@ mkfifo $psmgr
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
+
+sleep 1
 
 (
   SITE=org
@@ -83,6 +87,8 @@ mkfifo $psmgr
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
+sleep 1
+
 (
   SITE=com
   INFRA=ec2
@@ -109,6 +115,8 @@ mkfifo $psmgr
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
+sleep 1
+
 (
   SITE=com
   INFRA=gce
@@ -134,6 +142,8 @@ mkfifo $psmgr
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
+
+sleep 1
 
 (
   SITE=com
