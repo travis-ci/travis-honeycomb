@@ -19,6 +19,12 @@ if [[ "$ENV" = 'staging' ]]; then
 fi
 
 HONEYCOMB_SAMPLE_RATE="${HONEYCOMB_SAMPLE_RATE:-1}"
+HONEYTAIL_ARGS=''
+if [[ "$HONEYCOMB_SAMPLE_RATE" -gt 1 ]]; then
+  HONEYTAIL_ARGS="--samplerate $HONEYCOMB_SAMPLE_RATE \
+    --dynsampling level \
+    --dynsampling repository"
+fi
 
 (
   SITE=org
@@ -41,9 +47,7 @@ HONEYCOMB_SAMPLE_RATE="${HONEYCOMB_SAMPLE_RATE:-1}"
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate $HONEYCOMB_SAMPLE_RATE \
-      --dynsampling level \
-      --dynsampling repository
+      $HONEYTAIL_ARGS
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
@@ -71,9 +75,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate $HONEYCOMB_SAMPLE_RATE \
-      --dynsampling level \
-      --dynsampling repository
+      $HONEYTAIL_ARGS
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
@@ -102,9 +104,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate $HONEYCOMB_SAMPLE_RATE \
-      --dynsampling level \
-      --dynsampling repository
+      $HONEYTAIL_ARGS
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
@@ -132,9 +132,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate $HONEYCOMB_SAMPLE_RATE \
-      --dynsampling level \
-      --dynsampling repository
+      $HONEYTAIL_ARGS
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
@@ -162,9 +160,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate $HONEYCOMB_SAMPLE_RATE \
-      --dynsampling level \
-      --dynsampling repository
+      $HONEYTAIL_ARGS
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
@@ -193,9 +189,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate $HONEYCOMB_SAMPLE_RATE \
-      --dynsampling level \
-      --dynsampling repository
+      $HONEYTAIL_ARGS
 
   echo "$SITE-$INFRA" >$psmgr
 ) &
