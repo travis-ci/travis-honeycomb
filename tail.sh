@@ -83,6 +83,7 @@ sleep 1
   INFRA=macstadium
   PAPERTRAIL_GROUP="08 - MacStadium"
   PAPERTRAIL_PROGRAM="travis-worker-$ENV"
+  PAPERTRAIL_GROUP_SUFFIX=''
   export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
 
   papertrail \
@@ -173,6 +174,7 @@ sleep 1
   INFRA=macstadium
   PAPERTRAIL_GROUP="08 - MacStadium"
   PAPERTRAIL_PROGRAM="travis-worker-$ENV"
+  PAPERTRAIL_GROUP_SUFFIX=''
   export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
 
   papertrail \
