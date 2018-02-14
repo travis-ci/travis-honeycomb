@@ -18,6 +18,8 @@ if [[ "$ENV" = 'staging' ]]; then
   PAPERTRAIL_GROUP_SUFFIX=' (Staging)'
 fi
 
+HONEYCOMB_SAMPLE_RATE="${HONEYCOMB_SAMPLE_RATE:-1}"
+
 (
   SITE=org
   INFRA=ec2
@@ -39,7 +41,7 @@ fi
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate 10 \
+      --samplerate $HONEYCOMB_SAMPLE_RATE \
       --dynsampling level \
       --dynsampling repository
 
@@ -69,7 +71,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate 10 \
+      --samplerate $HONEYCOMB_SAMPLE_RATE \
       --dynsampling level \
       --dynsampling repository
 
@@ -100,7 +102,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate 10 \
+      --samplerate $HONEYCOMB_SAMPLE_RATE \
       --dynsampling level \
       --dynsampling repository
 
@@ -130,7 +132,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate 10 \
+      --samplerate $HONEYCOMB_SAMPLE_RATE \
       --dynsampling level \
       --dynsampling repository
 
@@ -160,7 +162,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate 10 \
+      --samplerate $HONEYCOMB_SAMPLE_RATE \
       --dynsampling level \
       --dynsampling repository
 
@@ -191,7 +193,7 @@ sleep 1
       --file=- \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
-      --samplerate 10 \
+      --samplerate $HONEYCOMB_SAMPLE_RATE \
       --dynsampling level \
       --dynsampling repository
 
