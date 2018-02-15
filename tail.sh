@@ -5,11 +5,18 @@ psmgr=/tmp/travis-honeycomb-wait
 rm -f $psmgr
 mkfifo $psmgr
 
-if [ -z ${ENV+x} ]; then
-  echo "please set ENV to 'staging' or 'production'"
-  echo "we need it to choose the program filter on macstadium"
+if [ -z ${PAPERTRAIL_API_TOKEN_ORG+x} ]; then
+  echo "please set PAPERTRAIL_API_TOKEN_ORG"
   exit 1
 fi
+if [ -z ${PAPERTRAIL_API_TOKEN_COM+x} ]; then
+  echo "please set PAPERTRAIL_API_TOKEN_COM"
+  exit 1
+fi
+
+ENV="${ENV:-staging}"
+PAPERTRAIL_DELAY="${PAPERTRAIL_DELAY:-2}"
+BOOT_DELAY="${BOOT_DELAY:-1}"
 
 HONEYCOMB_DATASET='worker'
 PAPERTRAIL_GROUP_SUFFIX=''
@@ -36,10 +43,12 @@ fi
   papertrail \
       --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
       "program:$PAPERTRAIL_PROGRAM" \
-      -f -j | \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
-      --writekey=$HONEYCOMB_WRITEKEY \
+      --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
@@ -52,7 +61,7 @@ fi
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
-sleep 1
+sleep $BOOT_DELAY
 
 (
   SITE=org
@@ -64,10 +73,12 @@ sleep 1
   papertrail \
       --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
       "program:$PAPERTRAIL_PROGRAM" \
-      -f -j | \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
-      --writekey=$HONEYCOMB_WRITEKEY \
+      --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
@@ -80,7 +91,7 @@ sleep 1
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
-sleep 1
+sleep $BOOT_DELAY
 
 (
   SITE=org
@@ -93,10 +104,12 @@ sleep 1
   papertrail \
       --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
       "program:$PAPERTRAIL_PROGRAM" \
-      -f -j | \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
-      --writekey=$HONEYCOMB_WRITEKEY \
+      --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
@@ -109,7 +122,7 @@ sleep 1
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
-sleep 1
+sleep $BOOT_DELAY
 
 (
   SITE=com
@@ -121,10 +134,12 @@ sleep 1
   papertrail \
       --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
       "program:$PAPERTRAIL_PROGRAM" \
-      -f -j | \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
-      --writekey=$HONEYCOMB_WRITEKEY \
+      --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
@@ -137,7 +152,7 @@ sleep 1
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
-sleep 1
+sleep $BOOT_DELAY
 
 (
   SITE=com
@@ -149,10 +164,12 @@ sleep 1
   papertrail \
       --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
       "program:$PAPERTRAIL_PROGRAM" \
-      -f -j | \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
-      --writekey=$HONEYCOMB_WRITEKEY \
+      --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
@@ -165,7 +182,7 @@ sleep 1
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
-sleep 1
+sleep $BOOT_DELAY
 
 (
   SITE=com
@@ -178,10 +195,12 @@ sleep 1
   papertrail \
       --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
       "program:$PAPERTRAIL_PROGRAM" \
-      -f -j | \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
-      --writekey=$HONEYCOMB_WRITEKEY \
+      --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
