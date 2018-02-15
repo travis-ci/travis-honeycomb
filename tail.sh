@@ -29,8 +29,7 @@ HONEYCOMB_SAMPLE_RATE="${HONEYCOMB_SAMPLE_RATE:-1}"
 HONEYTAIL_ARGS=''
 if [[ "$HONEYCOMB_SAMPLE_RATE" -gt 1 ]]; then
   HONEYTAIL_ARGS="--samplerate $HONEYCOMB_SAMPLE_RATE \
-    --dynsampling level \
-    --dynsampling repository"
+    --dynsampling level"
 fi
 
 (
