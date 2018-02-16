@@ -217,7 +217,7 @@ sleep $BOOT_DELAY
 (
   SITE=org
   PAPERTRAIL_SYSTEM=travis-org-hub-production
-  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
+  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
 
   papertrail \
       '"run:received event: cancel"' \
