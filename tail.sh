@@ -212,30 +212,32 @@ sleep $BOOT_DELAY
   echo "$SITE-$INFRA" >$psmgr
 ) &
 
-sleep $BOOT_DELAY
+if [[ "$HUB_CANCELLATIONS_ENABLED" = 'true' ]]; then
+  sleep $BOOT_DELAY
 
-(
-  SITE=org
-  PAPERTRAIL_SYSTEM=travis-org-hub-production
-  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
+  (
+    SITE=org
+    PAPERTRAIL_SYSTEM=travis-org-hub-production
+    export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
 
-  papertrail \
-      '"run:received event: cancel"' \
-      --system travis-org-hub-production \
-      --delay "$PAPERTRAIL_DELAY" \
-      --color=off \
-      --follow | \
-    honeytail \
-      --dataset hub-cancellations \
-      --writekey=$HONEYCOMB_WRITEKEY \
-      --parser=regex \
-      --regex.line_regex='Travis::Hub::Service::(?P<service>\w+)#run:received event: (?P<event>\w+) for repo=(?P<repo>\S+) id=(?P<id>\d+) user_id=(?P<user_id>\d+)' \
-      --file=-
-      --add_field app=hub \
-      --add_field site=$SITE
+    papertrail \
+        '"run:received event: cancel"' \
+        --system travis-org-hub-production \
+        --delay "$PAPERTRAIL_DELAY" \
+        --color=off \
+        --follow | \
+      honeytail \
+        --dataset hub-cancellations \
+        --writekey=$HONEYCOMB_WRITEKEY \
+        --parser=regex \
+        --regex.line_regex='Travis::Hub::Service::(?P<service>\w+)#run:received event: (?P<event>\w+) for repo=(?P<repo>\S+) id=(?P<id>\d+) user_id=(?P<user_id>\d+)' \
+        --file=-
+        --add_field app=hub \
+        --add_field site=$SITE
 
-  echo "org-hub-cancellations" >$psmgr
-) &
+    echo "org-hub-cancellations" >$psmgr
+  ) &
+fi
 
 read exit_process <$psmgr
 echo "at=exit process=$exit_process"
