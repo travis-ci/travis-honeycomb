@@ -46,6 +46,7 @@ fi
       --follow \
       --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
@@ -76,6 +77,7 @@ sleep $BOOT_DELAY
       --follow \
       --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
@@ -107,6 +109,7 @@ sleep $BOOT_DELAY
       --follow \
       --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
@@ -137,6 +140,7 @@ sleep $BOOT_DELAY
       --follow \
       --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
@@ -167,6 +171,7 @@ sleep $BOOT_DELAY
       --follow \
       --json | \
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
       --dataset="$HONEYCOMB_DATASET" \
