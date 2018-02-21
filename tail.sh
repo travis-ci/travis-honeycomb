@@ -33,6 +33,7 @@ if [[ "$HONEYCOMB_SAMPLE_RATE" -gt 1 ]]; then
 fi
 
 (
+  APP=worker
   SITE=org
   INFRA=ec2
   PAPERTRAIL_GROUP="04 - EC2 Workers"
@@ -54,16 +55,18 @@ fi
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 sleep $BOOT_DELAY
 
 (
+  APP=worker
   SITE=org
   INFRA=gce
   PAPERTRAIL_GROUP="05 - GCE Workers"
@@ -85,16 +88,18 @@ sleep $BOOT_DELAY
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 sleep $BOOT_DELAY
 
 (
+  APP=worker
   SITE=org
   INFRA=macstadium
   PAPERTRAIL_GROUP="08 - MacStadium"
@@ -117,16 +122,18 @@ sleep $BOOT_DELAY
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 sleep $BOOT_DELAY
 
 (
+  APP=worker
   SITE=com
   INFRA=ec2
   PAPERTRAIL_GROUP="04 - EC2 Workers"
@@ -148,16 +155,18 @@ sleep $BOOT_DELAY
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 sleep $BOOT_DELAY
 
 (
+  APP=kill-old-containers
   SITE=org
   INFRA=ec2
   PAPERTRAIL_GROUP="04 - EC2 Workers"
@@ -179,16 +188,18 @@ sleep $BOOT_DELAY
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 sleep $BOOT_DELAY
 
 (
+  APP=worker
   SITE=com
   INFRA=gce
   PAPERTRAIL_GROUP="05 - GCE Workers"
@@ -210,16 +221,18 @@ sleep $BOOT_DELAY
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 sleep $BOOT_DELAY
 
 (
+  APP=worker
   SITE=com
   INFRA=macstadium
   PAPERTRAIL_GROUP="08 - MacStadium"
@@ -241,17 +254,19 @@ sleep $BOOT_DELAY
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
       --file=- \
+      --add_field app=$APP \
       --add_field site=$SITE \
       --add_field infra=$INFRA \
       $HONEYTAIL_ARGS
 
-  echo "$SITE-$INFRA" >$psmgr
+  echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
 if [[ "$HUB_CANCELLATIONS_ENABLED" = 'true' ]]; then
   sleep $BOOT_DELAY
 
   (
+    APP=hub
     SITE=org
     PAPERTRAIL_SYSTEM=travis-org-hub-production
     export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
@@ -268,10 +283,10 @@ if [[ "$HUB_CANCELLATIONS_ENABLED" = 'true' ]]; then
         --parser=regex \
         --regex.line_regex='Travis::Hub::Service::(?P<service>\w+)#run:received event: (?P<event>\w+) for repo=(?P<repo>\S+) id=(?P<id>\d+) user_id=(?P<user_id>\d+)' \
         --file=-
-        --add_field app=hub \
+        --add_field app=$APP \
         --add_field site=$SITE
 
-    echo "org-hub-cancellations" >$psmgr
+    echo "$APP-$SITE-cancellations" >$psmgr
   ) &
 fi
 
