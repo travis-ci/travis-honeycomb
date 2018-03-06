@@ -10,3 +10,17 @@ it uses the ruby and apt buildpacks:
 heroku buildpacks:add heroku/ruby
 heroku buildpacks:add https://github.com/heroku/heroku-buildpack-apt
 ```
+
+## Debugging
+
+```
+heroku logs -a travis-honeytail-staging --tail
+```
+
+## Deploying
+
+You can deploy a branch to staging via the Travis `#deploys` Slack channel:
+
+```
+.deploy honeytail/your-branch-name to staging
+```
