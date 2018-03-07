@@ -166,6 +166,72 @@ sleep $BOOT_DELAY
 sleep $BOOT_DELAY
 
 (
+  APP=high-cpu-check
+  SITE=org
+  INFRA=ec2
+  PAPERTRAIL_GROUP="04 - EC2 Workers"
+  PAPERTRAIL_PROGRAM='high-cpu-check'
+  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
+
+  papertrail \
+      --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
+      "program:$PAPERTRAIL_PROGRAM" \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
+    jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
+    honeytail \
+      --writekey="$HONEYCOMB_WRITEKEY" \
+      --dataset="$HONEYCOMB_DATASET" \
+      --parser=keyval \
+      --keyval.timefield=time \
+      --keyval.filter_regex='time=' \
+      --file=- \
+      --add_field app=$APP \
+      --add_field site=$SITE \
+      --add_field infra=$INFRA \
+      $HONEYTAIL_ARGS
+
+  echo "$APP-$SITE-$INFRA" >$psmgr
+) &
+
+sleep $BOOT_DELAY
+
+(
+  APP=check-docker-health
+  SITE=org
+  INFRA=ec2
+  PAPERTRAIL_GROUP="04 - EC2 Workers"
+  PAPERTRAIL_PROGRAM='check-docker-health'
+  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
+
+  papertrail \
+      --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
+      "program:$PAPERTRAIL_PROGRAM" \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
+    jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
+    honeytail \
+      --writekey="$HONEYCOMB_WRITEKEY" \
+      --dataset="$HONEYCOMB_DATASET" \
+      --parser=keyval \
+      --keyval.timefield=time \
+      --keyval.filter_regex='time=' \
+      --file=- \
+      --add_field app=$APP \
+      --add_field site=$SITE \
+      --add_field infra=$INFRA \
+      $HONEYTAIL_ARGS
+
+  echo "$APP-$SITE-$INFRA" >$psmgr
+) &
+
+sleep $BOOT_DELAY
+
+(
   APP=kill-old-containers
   SITE=org
   INFRA=ec2
