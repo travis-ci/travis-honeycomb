@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # process management inspired by ryandotsmith/nginx-buildpack
-psmgr=/tmp/travis-honeycomb-wait
+psmgr=/tmp/travis-honeytail-wait
 rm -f $psmgr
 mkfifo $psmgr
 
@@ -327,34 +327,6 @@ sleep $BOOT_DELAY
 
   echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
-
-if [[ "$HUB_CANCELLATIONS_ENABLED" = 'true' ]]; then
-  sleep $BOOT_DELAY
-
-  (
-    APP=hub
-    SITE=org
-    PAPERTRAIL_SYSTEM=travis-org-hub-production
-    export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
-
-    papertrail \
-        '"run:received event: cancel"' \
-        --system travis-org-hub-production \
-        --delay "$PAPERTRAIL_DELAY" \
-        --color=off \
-        --follow | \
-      honeytail \
-        --dataset hub-cancellations \
-        --writekey=$HONEYCOMB_WRITEKEY \
-        --parser=regex \
-        --regex.line_regex='Travis::Hub::Service::(?P<service>\w+)#run:received event: (?P<event>\w+) for repo=(?P<repo>\S+) id=(?P<id>\d+) user_id=(?P<user_id>\d+)' \
-        --file=-
-        --add_field app=$APP \
-        --add_field site=$SITE
-
-    echo "$APP-$SITE-cancellations" >$psmgr
-  ) &
-fi
 
 read exit_process <$psmgr
 echo "at=exit process=$exit_process"
