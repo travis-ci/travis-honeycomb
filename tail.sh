@@ -328,6 +328,30 @@ sleep $BOOT_DELAY
   echo "$APP-$SITE-$INFRA" >$psmgr
 ) &
 
+leep $BOOT_DELAY
+
+(
+  APP=job-board-production
+  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
+
+  papertrail \
+      --system "$APP" \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
+    jq -cr '.events[]|select(.message|contains("msg="))|"dyno="+(.program|sub("app/"; ""))+" "+.message' | \
+    honeytail \
+      --writekey="$HONEYCOMB_WRITEKEY" \
+      --dataset="job-board" \
+      --parser=keyval \
+      --keyval.timefield=time \
+      --keyval.filter_regex='time=' \
+      --file=- \
+      $HONEYTAIL_ARGS
+
+  echo "$APP" >$psmgr
+) &
+
 read exit_process <$psmgr
 echo "at=exit process=$exit_process"
 exit 1
