@@ -357,6 +357,80 @@ sleep $BOOT_DELAY
   echo "$APP" >$psmgr
 ) &
 
+sleep $BOOT_DELAY
+
+(
+  APP=jupiter-brain
+  SITE=com
+  INFRA=macstadium
+  PAPERTRAIL_GROUP="08 - MacStadium"
+  PAPERTRAIL_PROGRAM="jupiter-brain-$ENV-$SITE"
+  PAPERTRAIL_GROUP_SUFFIX=''
+  JUPITER_BRAIN_DATASET="jupiter-brain"
+  if [[ "$ENV" = 'staging' ]]; then
+    JUPITER_BRAIN_DATASET="$JUPITER_BRAIN_DATASET-$ENV"
+  fi
+  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
+
+  papertrail \
+      --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
+      "program:$PAPERTRAIL_PROGRAM" \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
+    jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    honeytail \
+      --writekey="$HONEYCOMB_WRITEKEY" \
+      --dataset="$JUPITER_BRAIN_DATASET" \
+      --parser=keyval \
+      --keyval.timefield=time \
+      --keyval.filter_regex='time=' \
+      --file=- \
+      --add_field app=$APP \
+      --add_field site=$SITE \
+      --add_field infra=$INFRA \
+      $HONEYTAIL_ARGS
+
+  echo "$APP-$SITE-$INFRA" >$psmgr
+) &
+
+sleep $BOOT_DELAY
+
+(
+  APP=jupiter-brain
+  SITE=org
+  INFRA=macstadium
+  PAPERTRAIL_GROUP="08 - MacStadium"
+  PAPERTRAIL_PROGRAM="jupiter-brain-$ENV-$SITE"
+  PAPERTRAIL_GROUP_SUFFIX=''
+  JUPITER_BRAIN_DATASET="jupiter-brain"
+  if [[ "$ENV" = 'staging' ]]; then
+    JUPITER_BRAIN_DATASET="$JUPITER_BRAIN_DATASET-$ENV"
+  fi
+  export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
+
+  papertrail \
+      --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
+      "program:$PAPERTRAIL_PROGRAM" \
+      --delay "$PAPERTRAIL_DELAY" \
+      --follow \
+      --json | \
+    jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+    honeytail \
+      --writekey="$HONEYCOMB_WRITEKEY" \
+      --dataset="$JUPITER_BRAIN_DATASET" \
+      --parser=keyval \
+      --keyval.timefield=time \
+      --keyval.filter_regex='time=' \
+      --file=- \
+      --add_field app=$APP \
+      --add_field site=$SITE \
+      --add_field infra=$INFRA \
+      $HONEYTAIL_ARGS
+
+  echo "$APP-$SITE-$INFRA" >$psmgr
+) &
+
 read exit_process <$psmgr
 echo "at=exit process=$exit_process"
 exit 1
