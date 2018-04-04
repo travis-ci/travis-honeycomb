@@ -366,10 +366,6 @@ sleep $BOOT_DELAY
   PAPERTRAIL_GROUP="08 - MacStadium"
   PAPERTRAIL_PROGRAM="jupiter-brain-$ENV-$SITE"
   PAPERTRAIL_GROUP_SUFFIX=''
-  JUPITER_BRAIN_DATASET="jupiter-brain"
-  if [[ "$ENV" = 'staging' ]]; then
-    JUPITER_BRAIN_DATASET="$JUPITER_BRAIN_DATASET-$ENV"
-  fi
   export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
 
   papertrail \
@@ -381,7 +377,7 @@ sleep $BOOT_DELAY
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
-      --dataset="$JUPITER_BRAIN_DATASET" \
+      --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
@@ -403,10 +399,6 @@ sleep $BOOT_DELAY
   PAPERTRAIL_GROUP="08 - MacStadium"
   PAPERTRAIL_PROGRAM="jupiter-brain-$ENV-$SITE"
   PAPERTRAIL_GROUP_SUFFIX=''
-  JUPITER_BRAIN_DATASET="jupiter-brain"
-  if [[ "$ENV" = 'staging' ]]; then
-    JUPITER_BRAIN_DATASET="$JUPITER_BRAIN_DATASET-$ENV"
-  fi
   export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
 
   papertrail \
@@ -418,7 +410,7 @@ sleep $BOOT_DELAY
     jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
     honeytail \
       --writekey="$HONEYCOMB_WRITEKEY" \
-      --dataset="$JUPITER_BRAIN_DATASET" \
+      --dataset="$HONEYCOMB_DATASET" \
       --parser=keyval \
       --keyval.timefield=time \
       --keyval.filter_regex='time=' \
