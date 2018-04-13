@@ -43,7 +43,7 @@ export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
   PAPERTRAIL_PROGRAM='travis-worker'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -79,7 +79,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_PROGRAM='travis-worker'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -116,7 +116,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_GROUP_SUFFIX=''
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -152,7 +152,7 @@ sleep $BOOT_DELAY
   fi
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --system "$APP" \
         --delay "$PAPERTRAIL_DELAY" \
@@ -185,7 +185,7 @@ sleep $BOOT_DELAY
   export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_COM
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \

@@ -43,7 +43,7 @@ export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
   PAPERTRAIL_PROGRAM='travis-worker'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -79,7 +79,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_PROGRAM='travis-worker'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -116,7 +116,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_GROUP_SUFFIX=''
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -152,7 +152,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_PROGRAM='high-cpu-check'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -188,7 +188,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_PROGRAM='check-docker-health'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -224,7 +224,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_PROGRAM='kill-old-containers'
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
@@ -261,7 +261,7 @@ sleep $BOOT_DELAY
   PAPERTRAIL_GROUP_SUFFIX=''
   retries=0
 
-  while [ $retries -lt RETRY_LIMIT ]; do
+  while [ $retries -lt $RETRY_LIMIT ]; do
     papertrail \
         --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
         "program:$PAPERTRAIL_PROGRAM" \
