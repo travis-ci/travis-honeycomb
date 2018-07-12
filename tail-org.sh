@@ -123,7 +123,7 @@ sleep $BOOT_DELAY
         --delay "$PAPERTRAIL_DELAY" \
         --follow \
         --json | \
-      jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
+      jq -cr '.events[]|"hostname=" + .hostname + " " + "program=" + .program + " " + .message' | \
       perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
       honeytail \
         --writekey="$HONEYCOMB_WRITEKEY" \
