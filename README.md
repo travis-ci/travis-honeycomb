@@ -1,4 +1,4 @@
-# worker-honeycomb
+# travis-honeytail
 
 Parses logs (which need to be in the [logrus](https://github.com/sirupsen/logrus) format) from [worker](https://github.com/travis-ci/worker) and other related utilities and ships them to [honeycomb](https://honeycomb.io/) via [honeytail](https://github.com/honeycombio/honeytail)!
 
