@@ -1,6 +1,6 @@
 # worker-honeycomb
 
-Parses logs from [worker](https://github.com/travis-ci/worker) and other related utilities (in the [logrus](https://github.com/sirupsen/logrus) format) and ships them to [honeycomb](https://honeycomb.io/) via [honeytail](https://github.com/honeycombio/honeytail)!
+Parses logs (which need to be in the [logrus](https://github.com/sirupsen/logrus) format) from [worker](https://github.com/travis-ci/worker) and other related utilities and ships them to [honeycomb](https://honeycomb.io/) via [honeytail](https://github.com/honeycombio/honeytail)!
 
 This runs on heroku. We're using separate dynos for .org and .com in order to bypass some rate limiting imposed by Papertrail. 
 
