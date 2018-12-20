@@ -38,42 +38,6 @@ export PAPERTRAIL_API_TOKEN=$PAPERTRAIL_API_TOKEN_ORG
 (
   APP=worker
   SITE=org
-  INFRA=ec2
-  PAPERTRAIL_GROUP="04 - EC2 Workers"
-  PAPERTRAIL_PROGRAM='travis-worker'
-  retries=0
-
-  while [ $retries -lt $RETRY_LIMIT ]; do
-    papertrail \
-        --group "${PAPERTRAIL_GROUP}${PAPERTRAIL_GROUP_SUFFIX}" \
-        "program:$PAPERTRAIL_PROGRAM" \
-        --delay "$PAPERTRAIL_DELAY" \
-        --follow \
-        --json | \
-      jq -cr '.events[]|"hostname=" + .hostname + " " + .message' | \
-      perl -lape 's/message repeated \d+ times: \[ (.*)\]/$1/g' | \
-      honeytail \
-        --writekey="$HONEYCOMB_WRITEKEY" \
-        --dataset="$HONEYCOMB_DATASET" \
-        --parser=keyval \
-        --keyval.timefield=time \
-        --keyval.filter_regex='time=' \
-        --file=- \
-        --add_field app=$APP \
-        --add_field site=$SITE \
-        --add_field infra=$INFRA \
-        $HONEYTAIL_ARGS
-    retries=$[$retries+1]
-    sleep $BOOT_DELAY
-  done
-  echo "$APP-$SITE-$INFRA" >$psmgr
-) &
-
-sleep $BOOT_DELAY
-
-(
-  APP=worker
-  SITE=org
   INFRA=gce
   PAPERTRAIL_GROUP="05 - GCE Workers"
   PAPERTRAIL_PROGRAM='travis-worker'
