@@ -3,7 +3,7 @@ GEM
   specs:
     ansi (1.5.0)
     chronic (0.10.2)
-    papertrail (0.10.4)
+    papertrail (0.11.0)
       ansi (~> 1.5)
       chronic (~> 0.10)
 
@@ -14,7 +14,7 @@ DEPENDENCIES
   papertrail
 
 RUBY VERSION
-   ruby 2.5.0p0
+   ruby 2.7.1p83
 
 BUNDLED WITH
-   1.16.0
+   2.1.4
